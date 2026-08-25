@@ -1,0 +1,13 @@
+# Personal assets kept out of the public repo
+assets/
+
+# OS / editor cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# Local scratch
+*.log
+*.bak
