@@ -639,10 +639,77 @@
   <footer id="colophon">Built as a prototype for an internship application — not affiliated with or endorsed by HexCoded. All product references are based on publicly available information on hexcoded.ai. Logic lives in <code>js/scoring.js</code> + <code>js/storage.js</code>; localStorage-based, no backend.</footer>
 </main>
 
+<!-- ══ ILLUSTRATIVE RENDER PREVIEW (opened by #fullRenderBtn) ══════ -->
+<dialog class="rp" id="renderPreview" aria-labelledby="rpTitle">
+  <div class="rp-panel">
+
+    <div class="rp-head">
+      <div>
+        <div class="rp-eyebrow">Creative Studio hand-off</div>
+        <h2 class="rp-title" id="rpTitle">&mdash;</h2>
+        <div class="rp-sub" id="rpSub">&mdash;</div>
+      </div>
+      <button class="rp-close" type="button" data-rp-close aria-label="Close preview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <!-- the composite: persona + the real uploaded product, tied together
+         by the actor's own brand-tone accent -->
+    <div class="rp-stage">
+      <figure class="rp-cell rp-cell--actor">
+        <div class="rp-avatar" id="rpAvatar"></div>
+        <figcaption>
+          <span class="rp-cell-name" id="rpActorName">&mdash;</span>
+          <span class="rp-cell-meta" id="rpActorTag">&mdash;</span>
+        </figcaption>
+      </figure>
+
+      <div class="rp-link" aria-hidden="true">
+        <span class="rp-link-line"></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+        <span class="rp-link-line"></span>
+      </div>
+
+      <figure class="rp-cell rp-cell--product">
+        <div class="rp-shot"><img id="rpProductImg" src="" alt=""></div>
+        <figcaption>
+          <span class="rp-cell-name" id="rpProductCat">&mdash;</span>
+          <span class="rp-cell-meta">your uploaded product</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="rp-standin">Illustrative preview &mdash; not a real render.</div>
+
+    <div class="rp-meta">
+      <div class="rp-score-wrap">
+        <div class="rp-score-lbl">Fit score for this pairing</div>
+        <div class="rp-score-row">
+          <span class="rp-score" id="rpScore">&mdash;</span><span class="rp-den">/10</span>
+          <span class="conf-pill" id="rpConf"></span>
+        </div>
+      </div>
+      <p class="rp-model">An actual render would use <b id="rpModel">Veo 3.1</b> via Creative Studio.</p>
+    </div>
+
+    <p class="rp-note">In production this hands off to Creative Studio, which spends the credits and
+      produces the finished video. Fit Check runs first precisely so that spend is informed &mdash;
+      what you see above is a layout mock of the pairing, composed in the browser.</p>
+
+    <div class="rp-actions">
+      <button class="btn btn-ghost" type="button" data-rp-close>Close</button>
+    </div>
+  </div>
+</dialog>
+
 <div class="toast" id="toast"></div>
 
 <script type="module" src="js/theme.js"></script>
 <script type="module" src="js/main.js"></script>
 <script type="module" src="js/library.js"></script>
+<script type="module" src="js/render-preview.js"></script>
 </body>
 </html>
