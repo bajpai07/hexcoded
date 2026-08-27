@@ -21,7 +21,7 @@
 
   --text: #e8f0eb;
   --text-2: #a3b8ab;
-  --text-3: #617a6a;
+  --text-3: #7d9488;
 
 
   /* ── role tokens (light theme overrides these below) ───────────── */
@@ -63,7 +63,13 @@
 
 /* ── Reset ─────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* sticky header is ~57-70px; keep anything scrolled-to clear of it.
+     Global scroll-padding replaces the per-element scroll-margin-top rules
+     that used to be sprinkled on .flow / .section / .rail / .for-actors. */
+  scroll-padding-top: 96px;
+}
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
@@ -88,7 +94,6 @@ body {
 .flow {
   max-width: 800px;
   margin: 0 auto;
-  scroll-margin-top: 96px;
 }
 /* Long-form text never runs the full 1280px measure. */
 .sub, .notice, footer { max-width: 660px; }
@@ -152,9 +157,9 @@ html[data-theme="light"] {
   --warn: #b45309;
   --danger: #dc2626;
 
-  --text:   #0c1a13;   /* headings: near-black */
-  --text-2: #4a5c53;   /* body copy: readable dark gray, ~7:1 on white */
-  --text-3: #5b6b62;   /* muted labels - still >=4.5:1 on white and on --surface-3 */
+  --text:   #0a1710;   /* headings: near-black */
+  --text-2: #3a4a42;   /* body copy: confidently dark, ~9.4:1 on white */
+  --text-3: #4e5d55;   /* muted labels, ~7:1 on white */
 
   --line-faint:   rgba(13, 42, 30, .06);
   --line:         rgba(13, 42, 30, .09);
@@ -411,7 +416,7 @@ h1 {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(32px, 4.8vw, 52px);
   line-height: 1.08; font-weight: 700;
-  letter-spacing: -1.2px;
+  letter-spacing: -.02em;
   max-width: 740px;
   margin-bottom: 4px;
 }
@@ -423,19 +428,19 @@ h1 em {
   color: transparent;
 }
 .sub {
-  color: var(--text-2); font-size: 15px;
-  line-height: 1.7; max-width: 640px;
-  margin-top: 14px;
+  color: var(--text-2); font-size: 16px;
+  line-height: 1.7; max-width: 660px;
+  margin-top: 16px;
 }
 
 /* ── Notice ─────────────────────────────────────────────────────── */
 .notice {
-  margin-top: 22px; font-size: 12.5px; color: var(--text-3);
+  margin-top: 24px; font-size: 13px; color: var(--text-2);
   border: 1px solid var(--border); border-radius: 10px;
   padding: 12px 16px;
   background: var(--surface);
   display: flex; gap: 10px; align-items: flex-start;
-  line-height: 1.55;
+  line-height: 1.65;
 }
 .notice b { color: var(--text-2); }
 
@@ -678,7 +683,6 @@ h1 em {
 .rail {
   display: flex; align-items: center;
   margin: 40px 0 32px;
-  scroll-margin-top: 92px;
 }
 .step-pt {
   display: flex; align-items: center; gap: 10px;
@@ -729,13 +733,13 @@ h1 em {
 }
 .panel-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600; font-size: 17px;
-  margin-bottom: 6px;
+  font-weight: 700; font-size: 17px;
+  margin-bottom: 7px;
   letter-spacing: -.2px;
 }
 .panel-desc {
-  color: var(--text-2); font-size: 13.5px;
-  margin-bottom: 24px; line-height: 1.55;
+  color: var(--text-2); font-size: 14.5px;
+  margin-bottom: 26px; line-height: 1.65;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -949,8 +953,8 @@ select:focus {
   letter-spacing: -.3px;
 }
 .ev-note {
-  font-size: 11.5px; color: var(--text-3);
-  margin-top: 14px; line-height: 1.55;
+  font-size: 12.5px; color: var(--text-2);
+  margin-top: 16px; line-height: 1.65;
   border-top: 1px solid var(--border);
   padding-top: 14px;
 }
@@ -1003,8 +1007,8 @@ select:focus {
 
 /* ── Verdict ───────────────────────────────────────────────────── */
 .verdict {
-  padding: 14px 16px; border-radius: 10px;
-  font-size: 13px; line-height: 1.6;
+  padding: 15px 17px; border-radius: 10px;
+  font-size: 13.5px; line-height: 1.65;
   border: 1px solid var(--border);
   transition: background .35s, border-color .35s, color .35s;
 }
@@ -1021,8 +1025,8 @@ select:focus {
 
 /* ── Log section ───────────────────────────────────────────────── */
 .logSection p {
-  font-size: 11.5px; color: var(--text-3);
-  margin-bottom: 10px; line-height: 1.5;
+  font-size: 12.5px; color: var(--text-2);
+  margin-bottom: 12px; line-height: 1.6;
 }
 .logBtns { display: flex; gap: 8px; }
 .logBtn {
@@ -1167,12 +1171,12 @@ select:focus {
 .how-num--standin  { color: var(--warn);   background: rgba(244,183,64,.08); }
 .how-num--grounded { color: var(--cyan);       background: var(--cyan-wash); }
 .how-h {
-  font-weight: 600; font-size: 14px;
+  font-weight: 700; font-size: 14.5px;
   margin-bottom: 8px; letter-spacing: -.1px;
 }
 .how-p {
-  font-size: 12.5px; color: var(--text-2);
-  line-height: 1.6;
+  font-size: 13.5px; color: var(--text-2);
+  line-height: 1.65;
 }
 .how-list {
   list-style: none;
@@ -1182,7 +1186,7 @@ select:focus {
 .how-list li {
   position: relative;
   padding-left: 14px;
-  font-size: 12px; line-height: 1.6;
+  font-size: 13px; line-height: 1.65;
   color: var(--text-2);
 }
 .how-list li::before {
@@ -1204,20 +1208,20 @@ select:focus {
 /* ══════════════════════════════════════════════════════════════════
    SECTION SCAFFOLD — shared rhythm for every section below the hero
    ══════════════════════════════════════════════════════════════════ */
-.section { margin-top: 96px; scroll-margin-top: 92px; }
-.section-head { max-width: 660px; margin-bottom: 28px; }
+.section { margin-top: 96px; }
+.section-head { max-width: 680px; margin-bottom: 34px; }
 .section-eyebrow {
   font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase;
-  color: var(--text-3); font-weight: 700; margin-bottom: 12px;
+  color: var(--text-3); font-weight: 700; margin-bottom: 14px;
 }
 .section-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(22px, 2.6vw, 30px);
-  font-weight: 700; letter-spacing: -.7px;
-  line-height: 1.15; margin-bottom: 10px;
+  font-weight: 700; letter-spacing: -.02em;
+  line-height: 1.18; margin-bottom: 13px;
 }
 .section-sub {
-  color: var(--text-2); font-size: 14px; line-height: 1.65;
+  color: var(--text-2); font-size: 15px; line-height: 1.7;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1247,12 +1251,12 @@ select:focus {
 }
 .econ-cell--free .econ-num { color: var(--accent); }
 .econ-lbl {
-  font-size: 11px; color: var(--text-3);
-  margin-top: 8px; line-height: 1.5;
+  font-size: 12px; color: var(--text-2);
+  margin-top: 9px; line-height: 1.6;
 }
 .econ-note {
-  margin-top: 18px; max-width: 760px;
-  font-size: 13px; line-height: 1.7; color: var(--text-2);
+  margin-top: 20px; max-width: 780px;
+  font-size: 14px; line-height: 1.7; color: var(--text-2);
 }
 .econ-note b { color: var(--text); }
 
@@ -1288,10 +1292,10 @@ select:focus {
 .tool-icon svg { width: 20px; height: 20px; }
 .tool-card:hover .tool-icon { color: var(--accent); border-color: var(--border-hl); }
 .tool-name {
-  font-weight: 600; font-size: 14px;
+  font-weight: 700; font-size: 14.5px;
   letter-spacing: -.1px; margin-bottom: 6px;
 }
-.tool-desc { font-size: 12px; color: var(--text-3); line-height: 1.55; }
+.tool-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; }
 .tool-tag {
   position: absolute; top: 16px; right: 16px;
   font-size: 8.5px; font-weight: 700;
@@ -1349,12 +1353,12 @@ select:focus {
   overflow: hidden; flex-shrink: 0;
 }
 .lib-avatar svg { width: 100%; height: 100%; display: block; }
-.lib-name { font-weight: 600; font-size: 14.5px; letter-spacing: -.2px; }
+.lib-name { font-weight: 700; font-size: 14.5px; letter-spacing: -.2px; }
 .lib-tier { font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
 .lib-informal {
   margin: 14px 0 16px;
-  font-size: 11.5px; color: var(--text-3);
-  font-style: italic; line-height: 1.5;
+  font-size: 12.5px; color: var(--text-3);
+  font-style: italic; line-height: 1.6;
   padding-left: 10px;
   border-left: 2px solid var(--line);
 }
@@ -1405,10 +1409,10 @@ select:focus {
 
 /* the punchline under the grid */
 .lib-verdict {
-  margin-top: 18px; padding: 15px 18px;
+  margin-top: 20px; padding: 16px 20px;
   border: 1px solid var(--border); border-radius: 12px;
   background: var(--surface);
-  font-size: 13px; line-height: 1.65; color: var(--text-2);
+  font-size: 14px; line-height: 1.7; color: var(--text-2);
   transition: background .35s, border-color .35s;
 }
 .lib-verdict.on {
@@ -1427,7 +1431,7 @@ select:focus {
    paragraph rather than becoming separate flex items */
 .lib-legend-item {
   display: block;
-  font-size: 11px; color: var(--text-3); line-height: 1.6;
+  font-size: 12px; color: var(--text-2); line-height: 1.65;
   max-width: 470px;
 }
 .lib-legend-item b { color: var(--text-2); font-weight: 600; }
@@ -1444,16 +1448,15 @@ select:focus {
   margin-top: 28px; padding: 22px 24px;
   border: 1px solid var(--border); border-radius: 14px;
   background: var(--surface);
-  scroll-margin-top: 92px;
 }
 .fa-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600; font-size: 13px;
+  font-weight: 700; font-size: 13.5px;
   color: var(--text); margin-bottom: 8px;
   letter-spacing: .2px;
 }
 .fa-p {
-  font-size: 13px; line-height: 1.7;
+  font-size: 14px; line-height: 1.7;
   color: var(--text-2); max-width: 760px;
 }
 
@@ -1495,35 +1498,46 @@ select:focus {
   letter-spacing: 2.6px;
 }
 
-/* ── model rail ─────────────────────────────────────────────────── */
-.model-rail {
-  overflow-x: auto;
-  overflow-y: hidden;
+/* ── model marquee ──────────────────────────────────────────────────
+   The badge set is rendered twice. The track is therefore exactly 2x the
+   content width, so translating it by -50% lands the duplicate precisely
+   where the original started - the loop restarts on an identical frame
+   and the seam is invisible. gap is on the track, so the padding-free
+   duplicate butts up against the original at the same rhythm. */
+.model-marquee {
+  /* hidden still makes this a scroll container (scrollable programmatically,
+     and a focus-scroll inside the clipped half would offset the strip).
+     clip does not create one at all; hidden is the fallback. */
+  overflow: hidden;
+  overflow: clip;
   padding: 4px 0 14px;
-  /* fade the clipped edges so a mid-scroll row reads as continuing */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 42px, #000 calc(100% - 42px), transparent 100%);
-          mask-image: linear-gradient(90deg, transparent 0, #000 42px, #000 calc(100% - 42px), transparent 100%);
-  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
 }
-.model-rail:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--accent-glow);
-  border-radius: 14px;
-}
-.model-row {
+.model-track {
   display: flex;
   gap: 12px;
   width: max-content;
-  padding: 0 42px;
+  padding-left: 12px;        /* matches gap, so the seam spacing is even */
+  animation: modelMarquee 34s linear infinite;
+  will-change: transform;
+}
+/* let a viewer stop and actually read a badge */
+.model-marquee:hover .model-track,
+.model-marquee:focus-within .model-track { animation-play-state: paused; }
+
+@keyframes modelMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 .model-badge {
   display: flex; align-items: center; gap: 11px;
   flex: 0 0 auto;
+  scroll-snap-align: none;
   padding: 11px 18px 11px 12px;
   border-radius: 100px;
   border: 1px solid var(--border);
   background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
-  scroll-snap-align: center;
   transition: border-color .25s, transform .25s, box-shadow .25s;
 }
 .model-badge:hover {
@@ -1543,12 +1557,13 @@ select:focus {
 }
 .model-meta { display: flex; flex-direction: column; gap: 2px; }
 .model-name {
-  font-weight: 600; font-size: 13px;
+  font-weight: 700; font-size: 13.5px;
   color: var(--text); letter-spacing: -.1px;
   white-space: nowrap;
 }
 .model-vendor {
-  font-size: 10.5px; color: var(--text-3);
+  font-size: 11.5px; color: var(--text-3);
+  line-height: 1.5;
   white-space: nowrap;
 }
 .model-note {
@@ -1564,12 +1579,13 @@ select:focus {
   max-width: 860px; margin: 0 auto;
 }
 .lang-pill {
-  padding: 8px 16px;
+  padding: 9px 17px;
+  line-height: 1.5;
   border-radius: 100px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
-  font-size: 12.5px; font-weight: 500;
+  font-size: 13.5px; font-weight: 500;
   transition: border-color .2s, transform .2s, box-shadow .2s, color .2s;
 }
 .lang-pill:hover {
@@ -1595,11 +1611,11 @@ html[data-theme="light"] .lang-pill {
 html[data-theme="light"] .lang-pill--more { box-shadow: none; }
 
 @media (max-width: 700px) {
-  .model-rail {
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 20px, #000 calc(100% - 20px), transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0, #000 20px, #000 calc(100% - 20px), transparent 100%);
+  .model-marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
   }
-  .model-row { padding: 0 20px; }
+  .model-track { animation-duration: 26s; }
   .lang-pill { font-size: 11.5px; padding: 7px 13px; }
 }
 
@@ -1629,11 +1645,11 @@ footer {
   margin: 56px auto 0;
   padding: 28px 0;
   text-align: center;
-  color: var(--text-3);
-  font-size: 12px;
+  color: var(--text-2);
+  font-size: 13px;
   letter-spacing: .1px;
   border-top: 1px solid var(--border);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1700,6 +1716,7 @@ footer {
 /* Respect reduced-motion for the decorative hero + chip animation. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .model-track { animation: none; transform: none; }
   .badge-dot { animation: none; }
   .hv-stage:hover .hv-card { transform: var(--rest); }
 }
