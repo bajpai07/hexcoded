@@ -91,6 +91,21 @@ function clearUploadError() {
   uploadErr.textContent = '';
 }
 
+/* #dropSub reflects the COMBINED state, not whichever handler ran last —
+   otherwise uploading first and picking a category second leaves the caption
+   still saying "upload an image above" after the image is already there. */
+const DROP_SUB_DEFAULT = 'JPG or PNG · local upload only';
+function updateDropSub() {
+  const sub = document.getElementById('dropSub');
+  if (!productCategory) {
+    sub.textContent = DROP_SUB_DEFAULT;
+  } else if (!productImageEl) {
+    sub.textContent = 'Category set to: ' + productCategory + ' — upload an image above to continue';
+  } else {
+    sub.textContent = 'Category set to: ' + productCategory + ' — ready to continue';
+  }
+}
+
 document.getElementById('fileInput').addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -116,6 +131,7 @@ document.getElementById('fileInput').addEventListener('change', (e) => {
       preview.src = ev.target.result;
       drop.insertBefore(preview, document.getElementById('dropTitle'));
       document.getElementById('dropTitle').textContent = 'Click to change product photo';
+      updateDropSub();
       document.getElementById('toStep2').disabled = !productCategory;
     };
     img.src = ev.target.result;
@@ -128,7 +144,7 @@ document.querySelectorAll('.sample-chip').forEach(chip => {
     document.querySelectorAll('.sample-chip').forEach(c => c.classList.remove('on'));
     chip.classList.add('on');
     productCategory = chip.dataset.cat;
-    document.getElementById('dropSub').textContent = 'Category set to: ' + productCategory + ' — upload an image above to continue';
+    updateDropSub();
     document.getElementById('toStep2').disabled = !productImageEl;
   });
 });

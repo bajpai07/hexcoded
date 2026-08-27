@@ -33,10 +33,19 @@ function currentActor() {
   return actors.find(a => a.name === name && a.tag === tag) || null;
 }
 
-/** Pull the model names from the marquee so this never drifts from that list. */
+/**
+ * Pull the model names from the marquee so this never drifts from that list,
+ * but keep only the video models. Everything this prototype describes
+ * rendering — a finished 15s ad, 5s clips — is video, so attributing it to an
+ * image-only model (Recraft, FLUX, Nano Banana, GPT Image) would be wrong.
+ * The video/image split is read from each badge's own vendor label.
+ */
 function pickModel() {
   const names = [...new Set(
-    [...document.querySelectorAll('.model-name')].map(e => e.textContent.trim()).filter(Boolean)
+    [...document.querySelectorAll('.model-badge')]
+      .filter(badge => /video/i.test(badge.querySelector('.model-vendor')?.textContent || ''))
+      .map(badge => badge.querySelector('.model-name')?.textContent.trim())
+      .filter(Boolean)
   )];
   if (!names.length) return FALLBACK_MODEL;
   return names[Math.floor(Math.random() * names.length)];
