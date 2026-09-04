@@ -1820,8 +1820,9 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
 
 /* ── trigger ────────────────────────────────────────────────────── */
 .maria-fab {
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 11px 18px 11px 15px;
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 7px 20px 7px 7px;
   border-radius: 100px;
   border: 1px solid var(--border-hl);
   background: var(--surface);
@@ -1832,7 +1833,50 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
   box-shadow: 0 10px 30px var(--shadow-c);
   transition: transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s, border-color .2s, color .2s;
 }
-.maria-fab svg { width: 17px; height: 17px; color: var(--accent); flex-shrink: 0; }
+/* idle "breathing" glow — a separate layer so the button itself never
+   moves, and the accent only ever appears at low opacity */
+.maria-fab::before {
+  content: '';
+  position: absolute; inset: -3px;
+  border-radius: 100px;
+  background: var(--accent);
+  opacity: .10;
+  z-index: -1;
+  animation: mariaBreathe 3.6s ease-in-out infinite;
+}
+@keyframes mariaBreathe {
+  0%, 100% { transform: scale(1);    opacity: .08; }
+  50%      { transform: scale(1.03); opacity: .16; }
+}
+
+/* 44px to match .lib-avatar in the actor library */
+.maria-fab-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0; display: block;
+  background: var(--surface-2);
+}
+.maria-fab-avatar img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover;
+  /* 239x180 landscape source: the face sits at ~42% across, so shift the
+     cover window left of centre to bring it into the middle of the circle
+     while keeping the waving hand in frame */
+  object-position: 32% center;
+  /* one-time hello on first load — the FAB is built once and never
+     re-rendered, so this plays exactly once */
+  animation: mariaWave 1.4s ease-in-out .5s 1 both;
+  transform-origin: 50% 85%;
+}
+@keyframes mariaWave {
+  0%              { transform: rotate(0deg); }
+  15%             { transform: rotate(-8deg); }
+  30%             { transform: rotate(8deg); }
+  45%             { transform: rotate(-6deg); }
+  60%             { transform: rotate(6deg); }
+  75%             { transform: rotate(-3deg); }
+  90%, 100%       { transform: rotate(0deg); }
+}
+.maria-fab-label { white-space: nowrap; }
 .maria-fab:hover {
   transform: translateY(-2px);
   border-color: var(--accent);
@@ -1850,23 +1894,33 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
   border-radius: 16px;
   box-shadow: 0 26px 64px var(--shadow-c-strong);
   padding: 18px;
-  animation: mariaIn .24s cubic-bezier(.4,0,.2,1) both;
+  /* same easing + duration as the render-preview modal (rpIn) */
+  animation: mariaIn .28s cubic-bezier(.4, 0, .2, 1) both;
 }
 .maria-panel[hidden] { display: none; }
 @keyframes mariaIn {
-  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
 }
 
-.maria-head { display: flex; align-items: center; gap: 11px; }
+.maria-head { display: flex; align-items: center; gap: 13px; }
 .maria-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
-  color: var(--on-accent);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700; font-size: 15px;
+  width: 68px; height: 68px; border-radius: 50%;
+  flex-shrink: 0; overflow: hidden;
+  background: var(--surface-2);
+  /* same accent used by .actor-card.sel and other active states */
+  border: 2px solid var(--accent);
+  /* one-time arrival each time the panel opens, with a slight overshoot */
+  animation: mariaArrive .4s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+.maria-avatar img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover;
+  object-position: 32% center;
+}
+@keyframes mariaArrive {
+  from { transform: scale(.9); opacity: 0; }
+  to   { transform: scale(1);  opacity: 1; }
 }
 .maria-id { min-width: 0; }
 .maria-name {
@@ -1951,12 +2005,18 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
 
 @media (max-width: 560px) {
   .maria { right: 14px; bottom: 14px; }
-  .maria-fab span { display: none; }         /* icon-only on small screens */
-  .maria-fab { padding: 12px; }
+  .maria-fab-label { display: none; }        /* avatar-only on small screens */
+  .maria-fab { padding: 7px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .maria-panel { animation: none; }
+  .maria-panel,
+  .maria-fab::before,
+  .maria-fab-avatar img,
+  .maria-avatar { animation: none; }
+  .maria-fab::before { transform: none; opacity: .10; }
+  .maria-fab-avatar img { transform: none; }
+  .maria-avatar { transform: none; opacity: 1; }
   .maria-fab:hover { transform: none; }
 }
 

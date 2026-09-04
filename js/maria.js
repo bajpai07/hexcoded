@@ -136,7 +136,9 @@ function mount() {
   root.innerHTML = `
     <div class="maria-panel" id="mariaPanel" role="dialog" aria-label="Maria, actor guide" hidden>
       <div class="maria-head">
-        <div class="maria-avatar" aria-hidden="true">M</div>
+        <div class="maria-avatar" aria-hidden="true">
+          <img src="js/OIP.jpg" alt="">
+        </div>
         <div class="maria-id">
           <div class="maria-name">Maria</div>
           <div class="maria-role">HexCoded assistant</div>
@@ -155,11 +157,10 @@ function mount() {
 
     <button class="maria-fab" type="button" id="mariaFab" aria-expanded="false"
             aria-controls="mariaPanel" aria-label="Ask Maria which actor to use">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 11.5a8.5 8.5 0 01-11.9 7.8L3 21l1.7-5.1A8.5 8.5 0 1121 11.5z"/>
-      </svg>
-      <span>Ask Maria</span>
+      <span class="maria-fab-avatar" aria-hidden="true">
+        <img src="js/OIP.jpg" alt="">
+      </span>
+      <span class="maria-fab-label">Ask Maria</span>
     </button>`;
   document.body.appendChild(root);
 
