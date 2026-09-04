@@ -1805,6 +1805,162 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   MARIA — guided actor helper (floating widget)
+   Token-only: every colour, radius and font here already exists in the
+   design system, so light/dark and the card treatment come for free.
+   Sits bottom-right; the toast is bottom-centre, so they never collide.
+   ══════════════════════════════════════════════════════════════════ */
+.maria {
+  position: fixed;
+  right: 24px; bottom: 24px;
+  z-index: 45;                     /* under the toast (50), over the page */
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 12px;
+}
+
+/* ── trigger ────────────────────────────────────────────────────── */
+.maria-fab {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 11px 18px 11px 15px;
+  border-radius: 100px;
+  border: 1px solid var(--border-hl);
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600; font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px var(--shadow-c);
+  transition: transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s, border-color .2s, color .2s;
+}
+.maria-fab svg { width: 17px; height: 17px; color: var(--accent); flex-shrink: 0; }
+.maria-fab:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 34px var(--shadow-c-strong);
+}
+.maria-fab:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+
+/* ── panel ──────────────────────────────────────────────────────── */
+.maria-panel {
+  width: min(340px, calc(100vw - 40px));
+  max-height: min(560px, calc(100vh - 130px));
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border-hl);
+  border-radius: 16px;
+  box-shadow: 0 26px 64px var(--shadow-c-strong);
+  padding: 18px;
+  animation: mariaIn .24s cubic-bezier(.4,0,.2,1) both;
+}
+.maria-panel[hidden] { display: none; }
+@keyframes mariaIn {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+.maria-head { display: flex; align-items: center; gap: 11px; }
+.maria-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
+  color: var(--on-accent);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 15px;
+}
+.maria-id { min-width: 0; }
+.maria-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 15px; letter-spacing: -.2px;
+}
+.maria-role { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+.maria-x {
+  margin-left: auto; flex-shrink: 0;
+  width: 28px; height: 28px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; cursor: pointer;
+  border: 1px solid var(--line-2);
+  color: var(--text-3);
+  transition: color .2s, border-color .2s, background .2s;
+}
+.maria-x:hover { color: var(--text); border-color: var(--border-hl); background: var(--fill-subtle); }
+.maria-x svg { width: 13px; height: 13px; }
+
+/* the honesty note, same spirit as the stand-in labels on the page */
+.maria-disclaimer {
+  margin-top: 13px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-2);
+  font-size: 10.5px; line-height: 1.55;
+  color: var(--text-3);
+}
+
+/* ── conversation ───────────────────────────────────────────────── */
+.maria-body { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+.maria-msg {
+  padding: 11px 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 13px; line-height: 1.6;
+  color: var(--text-2);
+}
+.maria-msg b { color: var(--text); font-weight: 700; }
+.maria-msg--you {
+  align-self: flex-end;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: var(--border-hl);
+  color: var(--text);
+  font-weight: 600;
+}
+.maria-conf { margin-top: 9px; }
+
+.maria-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.maria-chip {
+  font-size: 12px; padding: 7px 13px;
+  border-radius: 100px;
+  border: 1px solid var(--line-2);
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all .2s ease;
+}
+.maria-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.maria-chip:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.maria-actions {
+  display: flex; flex-direction: column; align-items: stretch; gap: 9px;
+  margin-top: 2px;
+}
+.maria-actions .btn-sm { justify-content: center; text-align: center; }
+.maria-again {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px; color: var(--text-3);
+  text-decoration: underline; text-underline-offset: 3px;
+  transition: color .2s;
+}
+.maria-again:hover { color: var(--accent); }
+
+@media (max-width: 560px) {
+  .maria { right: 14px; bottom: 14px; }
+  .maria-fab span { display: none; }         /* icon-only on small screens */
+  .maria-fab { padding: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .maria-panel { animation: none; }
+  .maria-fab:hover { transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
    TOAST
    ══════════════════════════════════════════════════════════════════ */
 .toast {
