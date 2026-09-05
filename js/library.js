@@ -1,4 +1,21 @@
-
+/**
+ * library.js
+ * -----------------------------------------------------------------------
+ * Renders the "Actor library" section — the visual that makes the pitch
+ * concrete: today HexCoded ranks actors by USAGE VOLUME; Fit Check adds a
+ * second, outcome-based signal per category.
+ *
+ * This module is strictly additive and read-only with respect to the
+ * existing Fit Check flow:
+ *   - it imports the shared actor roster from main.js (no duplicate data)
+ *   - it reads the flywheel through storage.js's public allEntries()
+ *   - it never writes to localStorage and never touches scoring
+ *
+ * It stays in sync with logged outcomes by observing #leaderboard, which
+ * main.js's renderFlywheel() rewrites on every fit check, log, and reset.
+ * That keeps the coupling one-way: main.js has no knowledge of this file.
+ * -----------------------------------------------------------------------
+ */
 import { actors } from './main.js';
 import { allEntries, confidenceFor } from './storage.js';
 
