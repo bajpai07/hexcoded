@@ -25,6 +25,17 @@ import { computeFitScore } from './scoring.js';
 /* Same four categories the Fit Check chips use. */
 const CATEGORIES = ['Skincare', 'Electronics', 'Fashion', 'Home & Decor'];
 
+/* The honesty disclosure. Still shown in full — now behind the (i) beside
+   Maria's name rather than always-on, to free space for the intro card.
+   Kept as a named constant so it is obvious this text must not be dropped. */
+const DISCLOSURE = 'Template-based guide, not a live AI model — recommendations come from the ' +
+                   'same real fit-score data used in Fit Check below.';
+
+/* First-load introduction timings (skipped entirely under reduced motion). */
+const INTRO_DELAY_MS = 1500;   // let the page render first
+const INTRO_HOLD_MS = 5500;    // then collapse to the persistent pill
+const COLLAPSE_MS = 320;       // must match the CSS collapse duration
+
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 /**
@@ -140,7 +151,19 @@ function mount() {
           <img src="js/OIP.jpg" alt="">
         </div>
         <div class="maria-id">
-          <div class="maria-name">Maria</div>
+          <div class="maria-name">
+            Maria
+            <span class="maria-info-wrap">
+              <button class="maria-info" type="button" id="mariaInfo" aria-expanded="false"
+                      aria-describedby="mariaTip" aria-label="How these recommendations are made">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9"/><path d="M12 16v-4.5M12 8h.01"/>
+                </svg>
+              </button>
+              <span class="maria-tip" id="mariaTip" role="tooltip">${esc(DISCLOSURE)}</span>
+            </span>
+          </div>
           <div class="maria-role">HexCoded assistant</div>
         </div>
         <button class="maria-x" type="button" id="mariaClose" aria-label="Close">
@@ -149,11 +172,16 @@ function mount() {
         </button>
       </div>
 
-      <p class="maria-disclaimer">Template-based guide, not a live AI model — recommendations come
-        from the same real fit-score data used in Fit Check below.</p>
-
       <div class="maria-body" id="mariaBody"></div>
     </div>
+
+    <button class="maria-intro" type="button" id="mariaIntro"
+            aria-label="Ask Maria which actor to use">
+      <span class="maria-bubble">Hi, I'm Maria — need help picking an actor?</span>
+      <span class="maria-intro-avatar" aria-hidden="true">
+        <img src="js/OIP.jpg" alt="">
+      </span>
+    </button>
 
     <button class="maria-fab" type="button" id="mariaFab" aria-expanded="false"
             aria-controls="mariaPanel" aria-label="Ask Maria which actor to use">
@@ -219,6 +247,44 @@ function mount() {
   fab.addEventListener('click', toggle);
   root.querySelector('#mariaClose').addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) close(); });
+
+  /* ── (i) disclosure: hover/focus is CSS; this handles tap ──────────── */
+  const info = root.querySelector('#mariaInfo');
+  info.addEventListener('click', (e) => {
+    e.stopPropagation();
+    info.setAttribute('aria-expanded', info.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.maria-info-wrap')) info.setAttribute('aria-expanded', 'false');
+  });
+
+  /* ── first-load introduction ───────────────────────────────────────
+     Shows the large card, then collapses it to the persistent pill. The
+     pill is the CSS default, so if these timers never run for any reason
+     the widget still ends up in its normal state. */
+  const intro = root.querySelector('#mariaIntro');
+  let holdTimer = null;
+
+  function collapseIntro() {
+    clearTimeout(holdTimer);
+    if (!root.classList.contains('is-intro')) return;
+    root.classList.remove('is-intro');
+    root.classList.add('is-collapsing');          // keeps the card mounted while it shrinks
+    setTimeout(() => root.classList.remove('is-collapsing'), COLLAPSE_MS);
+  }
+
+  // clicking the card (bubble or avatar) opens the panel instead of collapsing
+  intro.addEventListener('click', () => { collapseIntro(); open(); });
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!reduced.matches) {
+    setTimeout(() => {
+      if (!panel.hidden) return;                  // already engaged — don't interrupt
+      root.classList.add('is-intro');
+      holdTimer = setTimeout(collapseIntro, INTRO_HOLD_MS);
+    }, INTRO_DELAY_MS);
+  }
+  // reduced motion: no intro at all — the pill is already there, no movement
 }
 
 mount();

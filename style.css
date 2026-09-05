@@ -1818,6 +1818,74 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
   align-items: flex-end; gap: 12px;
 }
 
+/* ── first-load introduction card ───────────────────────────────────
+   Bigger sibling of the pill, same tokens/radius/shadow. The pill is the
+   CSS default state; .is-intro swaps to the card, and .is-collapsing keeps
+   the card mounted just long enough to shrink away. */
+.maria-intro {
+  display: none;
+  width: 260px;
+  padding: 0;
+  border: none; background: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+}
+.maria.is-intro .maria-intro,
+.maria.is-collapsing .maria-intro { display: block; }
+
+.maria.is-intro .maria-intro {
+  animation: mariaIntroIn .42s cubic-bezier(.16, .84, .44, 1) both;
+}
+.maria.is-collapsing .maria-intro {
+  animation: mariaIntroOut .3s cubic-bezier(.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+@keyframes mariaIntroIn {
+  from { opacity: 0; transform: translateY(24px) scale(.95); }
+  to   { opacity: 1; transform: none; }
+}
+/* shrink toward the pill's corner as it goes */
+@keyframes mariaIntroOut {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(14px) scale(.72); }
+}
+
+.maria-bubble {
+  display: block;
+  padding: 13px 15px;
+  border-radius: 16px 16px 16px 4px;
+  border: 1px solid var(--border-hl);
+  background: var(--surface);
+  box-shadow: 0 14px 36px var(--shadow-c);
+  font-size: 13.5px; line-height: 1.5; font-weight: 500;
+  color: var(--text);
+}
+.maria-intro-avatar {
+  display: block; margin: 10px 0 0 auto;
+  width: 76px; height: 76px; border-radius: 50%;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 2px solid var(--accent);
+  box-shadow: 0 12px 30px var(--shadow-c);
+}
+.maria-intro-avatar img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover;
+  object-position: 32% center;
+}
+.maria-intro:hover .maria-bubble { border-color: var(--accent); }
+.maria-intro:focus-visible { outline: none; }
+.maria-intro:focus-visible .maria-bubble { box-shadow: 0 0 0 3px var(--accent-glow); }
+
+/* the pill yields to the card while the intro is on screen */
+.maria.is-intro .maria-fab,
+.maria.is-collapsing .maria-fab {
+  opacity: 0;
+  transform: scale(.85);
+  pointer-events: none;
+}
+
 /* ── trigger ────────────────────────────────────────────────────── */
 .maria-fab {
   position: relative;
@@ -1831,7 +1899,8 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
   font-weight: 600; font-size: 13px;
   cursor: pointer;
   box-shadow: 0 10px 30px var(--shadow-c);
-  transition: transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s, border-color .2s, color .2s;
+  transition: transform .3s cubic-bezier(.16,.84,.44,1), opacity .3s ease,
+              box-shadow .2s, border-color .2s, color .2s;
 }
 /* idle "breathing" glow — a separate layer so the button itself never
    moves, and the accent only ever appears at low opacity */
@@ -1862,10 +1931,12 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
      cover window left of centre to bring it into the middle of the circle
      while keeping the waving hand in frame */
   object-position: 32% center;
-  /* one-time hello on first load — the FAB is built once and never
-     re-rendered, so this plays exactly once */
-  animation: mariaWave 1.4s ease-in-out .5s 1 both;
   transform-origin: 50% 85%;
+}
+/* one-time hello, timed to when the pill is actually visible — during the
+   intro the selector does not match, so it starts as the pill arrives */
+.maria:not(.is-intro):not(.is-collapsing) .maria-fab-avatar img {
+  animation: mariaWave 1.4s ease-in-out .5s 1 both;
 }
 @keyframes mariaWave {
   0%              { transform: rotate(0deg); }
@@ -1903,7 +1974,7 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
   to   { opacity: 1; transform: none; }
 }
 
-.maria-head { display: flex; align-items: center; gap: 13px; }
+.maria-head { position: relative; display: flex; align-items: center; gap: 13px; }
 .maria-avatar {
   width: 68px; height: 68px; border-radius: 50%;
   flex-shrink: 0; overflow: hidden;
@@ -1940,15 +2011,43 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
 .maria-x:hover { color: var(--text); border-color: var(--border-hl); background: var(--fill-subtle); }
 .maria-x svg { width: 13px; height: 13px; }
 
-/* the honesty note, same spirit as the stand-in labels on the page */
-.maria-disclaimer {
-  margin-top: 13px;
+/* the honesty note, same spirit as the stand-in labels on the page —
+   still shown in full, now behind the (i) beside Maria's name */
+.maria-info-wrap { display: inline-flex; vertical-align: middle; }
+.maria-info {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; padding: 0; margin-left: 6px;
+  border: none; background: none; cursor: pointer;
+  color: var(--text-3);
+  transition: color .2s;
+}
+.maria-info svg { width: 14px; height: 14px; display: block; }
+.maria-info:hover, .maria-info[aria-expanded="true"] { color: var(--accent); }
+.maria-info:focus-visible {
+  outline: none; border-radius: 50%;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.maria-tip {
+  /* spans the header, so it always sits inside the panel */
+  position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+  z-index: 2;
   padding: 9px 11px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-hl);
   border-radius: 9px;
   background: var(--surface-2);
-  font-size: 10.5px; line-height: 1.55;
-  color: var(--text-3);
+  box-shadow: 0 10px 26px var(--shadow-c);
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5px; line-height: 1.55; font-weight: 400;
+  letter-spacing: 0;
+  color: var(--text-2);
+  opacity: 0; visibility: hidden;
+  transform: translateY(-3px);
+  transition: opacity .18s ease, visibility .18s, transform .18s ease;
+}
+.maria-info:hover + .maria-tip,
+.maria-info:focus-visible + .maria-tip,
+.maria-info[aria-expanded="true"] + .maria-tip {
+  opacity: 1; visibility: visible; transform: none;
 }
 
 /* ── conversation ───────────────────────────────────────────────── */
@@ -2007,13 +2106,25 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
   .maria { right: 14px; bottom: 14px; }
   .maria-fab-label { display: none; }        /* avatar-only on small screens */
   .maria-fab { padding: 7px; }
+  .maria-intro { width: min(240px, calc(100vw - 40px)); }
+  .maria-intro-avatar { width: 64px; height: 64px; }
+  /* tip spans the header, so it needs no width override on small screens */
 }
 
 @media (prefers-reduced-motion: reduce) {
   .maria-panel,
   .maria-fab::before,
-  .maria-fab-avatar img,
+  .maria:not(.is-intro):not(.is-collapsing) .maria-fab-avatar img,
+  .maria-intro,
+  .maria.is-intro .maria-intro,
+  .maria.is-collapsing .maria-intro,
   .maria-avatar { animation: none; }
+  /* the intro sequence is skipped in JS as well; belt and braces */
+  .maria-intro { display: none !important; }
+  .maria.is-intro .maria-fab,
+  .maria.is-collapsing .maria-fab { opacity: 1; transform: none; pointer-events: auto; }
+  .maria-fab { transition: none; }
+  .maria-tip { transition: none; }
   .maria-fab::before { transform: none; opacity: .10; }
   .maria-fab-avatar img { transform: none; }
   .maria-avatar { transform: none; opacity: 1; }
