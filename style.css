@@ -2132,6 +2132,50 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   CONFIDENCE SHRINKAGE SPARKLINE (result panel, step 3)
+   Matches the .evidence card treatment so it reads as part of the panel.
+   Token-only: no new colours.
+   ══════════════════════════════════════════════════════════════════ */
+.cc {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+.cc[hidden] { display: none; }
+.cc-row { display: flex; align-items: center; gap: 14px; }
+.cc-svg { width: 130px; height: 38px; flex-shrink: 0; overflow: visible; }
+.cc-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cc-dots circle { fill: var(--accent); opacity: .45; }
+.cc-end { fill: var(--accent); }
+.cc-legend { min-width: 0; }
+.cc-ends {
+  display: flex; align-items: baseline; gap: 5px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 15px;
+  color: var(--text-3);
+  letter-spacing: -.3px;
+}
+.cc-arrow { color: var(--text-3); font-weight: 400; }
+.cc-now { color: var(--accent); }
+.cc-sub {
+  font-size: 10px; color: var(--text-3);
+  margin-top: 3px; letter-spacing: .2px;
+}
+.cc-cap {
+  margin-top: 10px;
+  font-size: 11px; line-height: 1.6;
+  color: var(--text-3);
+}
+
+/* ══════════════════════════════════════════════════════════════════
    TOAST
    ══════════════════════════════════════════════════════════════════ */
 .toast {
