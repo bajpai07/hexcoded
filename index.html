@@ -319,7 +319,11 @@
               <div class="ev-label">Category × actor affinity</div>
               <div class="ev-val" id="evAffinity">—</div>
             </div>
-            <div class="ev-note">Real pixel data from your upload + a curated affinity table — not a hash or a random number.</div>
+            <div class="ev-row">
+              <div class="ev-label">Delivery-tone signal</div>
+              <div class="ev-val" id="evDelivery">—</div>
+            </div>
+            <div class="ev-note">Real pixel data from your upload, plus two hand-set tables (affinity and delivery tone) — not a hash or a random number.</div>
           </div>
 
           <div class="score-block">
@@ -622,6 +626,11 @@
         <div class="how-num how-num--standin">Stand-in</div>
         <div class="how-h">Affinity table &amp; hue-harmony rule</div>
         <div class="how-p">The category/actor affinity numbers are hand-set for this demo. In production these would be learned from real render-outcome data — same architecture, trained weights.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num how-num--standin">Stand-in</div>
+        <div class="how-h">Delivery-tone signal</div>
+        <div class="how-p">The third signal in the score, and the thinnest of the three. No audio is recorded, loaded or analysed anywhere in this prototype — it is two typed-in tables: a 0–1 energy value per persona, and the energy each category suits. In production the per-actor value would come from the voice samples the actor library already holds, and the per-category value from how energetic deliveries actually performed. Here it is a placeholder for that, weighted lowest (25%) precisely because it is the least substantiated.</div>
       </div>
       <div class="how-card">
         <div class="how-num how-num--grounded">Grounded</div>

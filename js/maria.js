@@ -86,6 +86,7 @@ function bestHeuristicForCategory(category) {
         actorHueDeg: a.actorHue,
         category,
         actorTag: a.tag,
+        actorName: a.name,
       }).score,
     }))
     .sort((a, b) => b.score - a.score)[0];

@@ -25,7 +25,7 @@
  * Removing this file's script tag removes the chart and nothing else.
  * -----------------------------------------------------------------------
  */
-import { actors } from './main.js';
+import { actors, currentHeuristic } from './main.js';
 import { allEntries, blendedScore, confidenceFor } from './storage.js';
 import { computeFitScore, rgbToHsl } from './scoring.js';
 
@@ -82,13 +82,20 @@ function shrinkagePath(combo) {
   const n = entry.count;
   const avg = entry.sum / n;
 
-  const productHsl = productHslFromSwatch();
-  const heuristic = computeFitScore({
-    productHsl,
-    actorHueDeg: combo.actor.actorHue,
-    category: combo.category,
-    actorTag: combo.actor.tag,
-  }).score;
+  // Prefer the heuristic main.js actually used. Rebuilding it from the swatch
+  // costs precision: the swatch is written with rounded h/s/l, so the rgb->hsl
+  // round trip shifts the hue and can move the score by 0.1. Fall back to the
+  // reconstruction only if main.js has not run a check yet.
+  const fromMain = currentHeuristic();
+  const heuristic = fromMain
+    ? fromMain.score
+    : computeFitScore({
+        productHsl: productHslFromSwatch(),
+        actorHueDeg: combo.actor.actorHue,
+        category: combo.category,
+        actorTag: combo.actor.tag,
+        actorName: combo.actor.name,
+      }).score;
 
   const w = recoverPriorWeight(combo.key, n);
   if (w === null) return null;

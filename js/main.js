@@ -1,4 +1,4 @@
-import { extractDominantColor, computeFitScore } from './scoring.js';
+import { extractDominantColor, computeFitScore, deliveryLabel } from './scoring.js';
 import { blendedScore, confidenceFor, logOutcome, allEntries, resetAll } from './storage.js';
 
 /* ---------- actor personas ---------- */
@@ -47,6 +47,7 @@ function renderActorGrid() {
       <div class="actor-avatar">${avatarSVG(a)}</div>
       <div class="actor-name">${a.name}</div>
       <div class="actor-tag">${a.tag}</div>
+      <div class="actor-delivery">${deliveryLabel(a.name)}</div>
     `;
     card.addEventListener('click', () => selectActor(i, card));
     grid.appendChild(card);
@@ -162,6 +163,11 @@ document.getElementById('toStep3').addEventListener('click', () => {
   runFitCheck();
 });
 
+/* The heuristic main.js last computed. lastHeuristic was already tracked but
+   unread; exposing it lets the sparkline use the authoritative value instead of
+   rebuilding it from the rounded swatch colour, which drifts the hue slightly. */
+export function currentHeuristic() { return lastHeuristic; }
+
 function runFitCheck() {
   currentKey = comboKey(productCategory, selectedActor.name, selectedActor.tag);
   currentLabel = comboLabel(productCategory, selectedActor.name, selectedActor.tag);
@@ -171,6 +177,7 @@ function runFitCheck() {
     actorHueDeg: selectedActor.actorHue,
     category: productCategory,
     actorTag: selectedActor.tag,
+    actorName: selectedActor.name,
   });
   lastHeuristic = heuristic;
 
@@ -185,6 +192,7 @@ function runFitCheck() {
     : '#333';
   document.getElementById('evColor').textContent = (heuristic.colorComponent * 100).toFixed(0) + '%';
   document.getElementById('evAffinity').textContent = (heuristic.affinity * 100).toFixed(0) + '%';
+  document.getElementById('evDelivery').textContent = (heuristic.delivery * 100).toFixed(0) + '%';
 
   // Animated score counter
   const scoreEl = document.getElementById('scoreNum');
