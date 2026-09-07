@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>
+  /* Applied before first paint so a saved light theme never flashes dark.
+     Kept inline and tiny on purpose - it must run before the stylesheet
+     paints, which a deferred module cannot do. */
+  (function () {
+    try {
+      if (localStorage.getItem('hexcoded-theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    } catch (e) { /* storage blocked - fall through to the dark default */ }
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competitive landscape · Fit Check — HexCoded concept prototype</title>
+<meta name="description" content="Where a pre-render conversion-intelligence score sits against Arcads, HeyGen, Creatify and Synthesia — a competitive-landscape page built from public research for an internship application.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%230a0f0d%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27none%27 stroke=%27%234ade80%27 stroke-width=%272%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%273.5%27 fill=%27%234ade80%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+<!-- ══ NAV — same shell as index.html ═════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">HX</div>
+      <div class="brand-name">HexCoded <span>/ Fit Check</span></div>
+    </a>
+
+    <nav class="site-nav" aria-label="Product navigation">
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#actors">Actors</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#for-actors">For actors</a>
+      <a href="competitors.html" aria-current="page">Compare</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button"
+              aria-label="Switch to light theme" title="Switch to light theme" aria-pressed="false">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.5 14.2A8.5 8.5 0 019.8 3.5a8.5 8.5 0 1010.7 10.7z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2v2.4M12 19.6V22M22 12h-2.4M4.4 12H2M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7M19.1 19.1l-1.7-1.7M6.6 6.6L4.9 4.9"/>
+        </svg>
+      </button>
+      <div class="badge"><span class="badge-dot" aria-hidden="true"></span>Concept Prototype</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ══ HERO ═══════════════════════════════════════════════════════ -->
+  <section class="section compare-hero">
+    <div class="section-head">
+      <div class="section-eyebrow">Competitive landscape</div>
+      <h1 class="section-title compare-h1">Where Fit Check fits in a crowded field</h1>
+      <p class="section-sub">This is a competitive-landscape page I built from public research while
+        making this prototype for an internship application. It is not an official HexCoded comparison
+        and carries no endorsement from any company named on it. Every competitor here is a serious
+        product built for a real job; the point of the page is to show where a pre-render
+        conversion-intelligence layer would sit among them, not to argue that anyone else is doing
+        their job badly.</p>
+    </div>
+  </section>
+
+  <!-- ══ COMPARISON ═════════════════════════════════════════════════ -->
+  <section class="section" id="matrix">
+    <div class="section-head">
+      <div class="section-eyebrow">The field</div>
+      <h2 class="section-title">Five products, five different jobs</h2>
+      <p class="section-sub">Compared only on the axes that matter for this question. Pricing is kept
+        qualitative on purpose — published tiers move faster than a prototype page can track.</p>
+    </div>
+
+    <div class="compare-scroll" tabindex="0" role="group" aria-label="Competitive comparison table">
+      <table class="compare-table">
+        <caption class="compare-caption">Positioning across five axes. The final column is the one
+          this research found nobody occupying.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Actor library</th>
+            <th scope="col">Model orchestration</th>
+            <th scope="col">Pricing tier</th>
+            <th scope="col">Ad-creative focus</th>
+            <th scope="col">Pre-render fit-scoring</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="compare-row compare-row--us">
+            <th scope="row">
+              <span class="compare-name">HexCoded</span>
+              <span class="compare-note">the platform this prototype targets</span>
+            </th>
+            <td>AI actors, your AI twin, and consent-licensed real actors <span class="compare-tick">three tiers</span></td>
+            <td>Many models under one subscription <span class="compare-tick">16 frontier models</span></td>
+            <td>Credit-based; failed renders are free</td>
+            <td>Dedicated — ad creative first</td>
+            <td class="compare-yes"><span aria-hidden="true">✓</span>
+              <span class="compare-yes-label">Fit Check, prototype</span></td>
+          </tr>
+          <tr class="compare-row">
+            <th scope="row">
+              <span class="compare-name">Arcads</span>
+              <span class="compare-note">UGC-ad specialist</span>
+            </th>
+            <td>Large AI-actor library, synthetic only</td>
+            <td>Single vendor</td>
+            <td>Premium · no free tier</td>
+            <td>Dedicated — high-volume ad testing</td>
+            <td class="compare-no"><span aria-hidden="true">✗</span><span class="sr-only">No</span></td>
+          </tr>
+          <tr class="compare-row">
+            <th scope="row">
+              <span class="compare-name">HeyGen</span>
+              <span class="compare-note">avatars &amp; localization</span>
+            </th>
+            <td>AI avatars, synthetic only</td>
+            <td>Single vendor</td>
+            <td>Free tier available</td>
+            <td>General-purpose — spokesperson, explainer, corporate</td>
+            <td class="compare-no"><span aria-hidden="true">✗</span><span class="sr-only">No</span></td>
+          </tr>
+          <tr class="compare-row">
+            <th scope="row">
+              <span class="compare-name">Creatify</span>
+              <span class="compare-note">URL → ad pipeline</span>
+            </th>
+            <td>AI actors, synthetic only</td>
+            <td>Single vendor</td>
+            <td>Mid-tier</td>
+            <td>Dedicated — ecommerce ad volume</td>
+            <td class="compare-no"><span aria-hidden="true">✗</span><span class="sr-only">No</span></td>
+          </tr>
+          <tr class="compare-row">
+            <th scope="row">
+              <span class="compare-name">Synthesia</span>
+              <span class="compare-note">enterprise &amp; training</span>
+            </th>
+            <td>Broad avatar library, synthetic only</td>
+            <td>Single vendor</td>
+            <td>Mid to enterprise</td>
+            <td>General-purpose — corporate and training video</td>
+            <td class="compare-no"><span aria-hidden="true">✗</span><span class="sr-only">No</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="compare-foot">A small number of newer <b>multi-model studios</b> also let you generate
+      across several underlying models from one place — Veo, Seedance, Nano Banana and others. Those
+      are the closest structural peers to HexCoded's own aggregation strategy, and they are the reason
+      the orchestration column is not a moat on its own. None of them surfaced a pre-render fit score
+      either.</p>
+  </section>
+
+  <!-- ══ WHAT EACH ONE IS ACTUALLY FOR ══════════════════════════════ -->
+  <section class="section" id="field">
+    <div class="section-head">
+      <div class="section-eyebrow">Read fairly</div>
+      <h2 class="section-title">What each one is actually built for</h2>
+      <p class="section-sub">Most of these differences are positioning, not quality. A tool aimed at
+        corporate training is not "worse" than one aimed at paid social — it is aimed elsewhere.</p>
+    </div>
+
+    <div class="tool-grid compare-grid">
+      <div class="tool-card">
+        <div class="tool-name">Arcads</div>
+        <div class="tool-desc">A large AI-actor library reading hook-style scripts to camera, built
+          specifically for high-volume performance-marketing ad testing. Premium pricing, no free tier
+          — priced like a performance tool rather than a trial product.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">HeyGen</div>
+        <div class="tool-desc">Strong avatar realism and 175+ language dubbing. Built more for
+          spokesperson, explainer and corporate video than for scroll-native ad creative. A free tier
+          makes it the easiest of these to try.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Creatify</div>
+        <div class="tool-desc">A URL-to-ad pipeline: point it at a product page and get ad variations
+          back quickly, with a built-in editor. Focused on ecommerce volume — closest in shape to
+          HexCoded's own URL → Ad tool.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Synthesia</div>
+        <div class="tool-desc">Enterprise and corporate video with a broad avatar library, oriented
+          around training and internal communication rather than ad creative.</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Multi-model studios</div>
+        <div class="tool-desc">A small number of newer platforms generating across several underlying
+          models from one subscription — the closest structural peers to HexCoded's
+          sixteen-models-one-subscription approach.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ THE GAP ════════════════════════════════════════════════════ -->
+  <section class="section" id="gap">
+    <div class="section-head">
+      <div class="section-eyebrow">The white space</div>
+      <h2 class="section-title">What Fit Check specifically adds</h2>
+    </div>
+
+    <div class="evidence compare-gap">
+      <p class="compare-p">HexCoded already competes without Fit Check. It aggregates sixteen frontier
+        models — video and image — under one subscription rather than making a brand pick and pay for a
+        single vendor. It offers three actor tiers, including consent-based licensing for real actors,
+        where most competitors researched offer synthetic AI actors only. And it already treats
+        technical-failure waste as solved: failed renders are free, a policy most competitors do not
+        state at all.</p>
+
+      <p class="compare-p">What none of them appeared to have is a <b>pre-render, outcome-learning
+        score for whether a particular actor will convert for a particular product</b>. Across Arcads,
+        HeyGen, Creatify, Synthesia and the multi-model studios, choosing an actor means browsing a
+        library or sorting by popularity. Popularity is a usage signal: the actors who get picked most
+        are the ones who get picked most. It says nothing about whether that actor actually converted
+        for skincare, or for consumer electronics.</p>
+
+      <p class="compare-p">That is the gap Fit Check aims at, and it is the same problem the main site
+        opens with. A render that fails technically already costs nothing. The expensive case is the
+        render that succeeds technically and still underperforms, because the pairing was wrong — and
+        that one bills in full. A score computed <em>before</em> the credits are spent, which sharpens
+        as real outcomes are logged against it, is a different kind of signal from a library sorted by
+        popularity. As of this research, nobody in this set was surfacing one.</p>
+    </div>
+  </section>
+
+  <!-- ══ HONESTY ════════════════════════════════════════════════════ -->
+  <section class="section how" id="honesty">
+    <div class="section-head">
+      <div class="section-eyebrow">Honest accounting</div>
+      <h2 class="section-title">How to read this page</h2>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num how-num--standin">Caveat</div>
+        <div class="how-h">Public information, gathered once</div>
+        <div class="how-p">Everything here comes from publicly available material collected while
+          building this prototype. Nothing was obtained from any company directly, and no competitor
+          reviewed or approved a word of it.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num how-num--standin">Caveat</div>
+        <div class="how-h">This moves quickly</div>
+        <div class="how-p">Pricing tiers, avatar libraries and feature sets in this space change on a
+          scale of weeks. Anything stated here should be re-checked before it is relied on. Pricing is
+          deliberately described qualitatively rather than with figures that would go stale.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num how-num--standin">Caveat</div>
+        <div class="how-h">Scoped to what was researched</div>
+        <div class="how-p">The claim is that this research did not find a pre-render fit-scoring layer
+          in this set of products — not that it exists nowhere, nor that nobody will build one. It is a
+          snapshot, and a narrow one.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num how-num--grounded">Intent</div>
+        <div class="how-h">Market awareness, not disparagement</div>
+        <div class="how-p">The purpose is to show that this prototype was built with an understanding
+          of the field it would enter. Each product named here is well built for the job it targets.
+          Being aimed at a different job is a positioning difference, not a flaw.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="colophon">Built as a prototype for an internship application — not affiliated with or
+    endorsed by HexCoded, and not affiliated with or endorsed by any other company named on this page.
+    All product references are based on publicly available information.
+    <a class="compare-back" href="index.html">← Back to the Fit Check prototype</a></footer>
+</main>
+
+<script type="module" src="js/theme.js"></script>
+</body>
+</html>
