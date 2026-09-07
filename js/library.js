@@ -168,7 +168,17 @@ function render() {
 
   // Score every actor, then rank the ones that actually have outcomes.
   const rows = actors.map(a => ({ actor: a, usage: USAGE[a.name], fit: fitFor(a.name, data) }));
-  const withFit = rows.filter(r => r.fit).sort((a, b) => b.fit.avg - a.fit.avg);
+  // Ties break on outcome count: the same average backed by more logged
+  // outcomes is the more confident number, so it ranks higher. Without this the
+  // comparator returns 0 and the stable sort silently falls back to the order
+  // actors happen to sit in main.js's array, which has nothing to do with data
+  // quality. A full tie (same avg AND same count) keeps that array order.
+  const withFit = rows
+    .filter(r => r.fit)
+    .sort((a, b) => {
+      if (b.fit.avg !== a.fit.avg) return b.fit.avg - a.fit.avg;
+      return b.fit.count - a.fit.count;
+    });
   withFit.forEach((r, i) => { r.fitRank = i + 1; });
 
   grid.innerHTML = rows.map(r => {
