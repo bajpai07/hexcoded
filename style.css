@@ -2260,6 +2260,11 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
 }
 
 .compare-yes, .compare-no { white-space: nowrap; font-size: 17px; font-weight: 700; }
+/* "Not publicly confirmed" is a gap in what the research could find, not a
+   confirmed absence — muted, deliberately not marked as harshly as a cross. */
+/* needs the td qualifier: .compare-table td already sets colour at (0,1,1),
+   so a bare class at (0,1,0) loses and the cell renders like any other. */
+.compare-table td.compare-unknown { color: var(--text-3); font-style: italic; }
 .compare-yes { color: var(--accent); }
 .compare-no  { color: var(--text-3); opacity: .7; }
 .compare-yes-label {
