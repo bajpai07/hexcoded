@@ -2281,6 +2281,14 @@ html[data-theme="light"] .rp::backdrop { background: rgba(16, 34, 26, .38); }
 
 .compare-grid { grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); }
 
+/* two cards stretched across the full grid run ~83 characters a line; capping
+   the measure keeps them readable. Scoped to the behind section only. */
+.compare-behind {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 900px;
+}
+@media (max-width: 700px) { .compare-behind { grid-template-columns: 1fr; } }
+
 .compare-gap { padding: 24px 26px; }
 .compare-p {
   font-size: 14px; line-height: 1.75;
