@@ -66,7 +66,10 @@ function bestLoggedForCategory(category) {
       avg: +(v.sum / v.count).toFixed(1),
       count: v.count,
     }))
-    .sort((a, b) => b.avg - a.avg);
+    .sort((a, b) => {
+      if (b.avg !== a.avg) return b.avg - a.avg;
+      return b.count - a.count; // tie-break: more logged outcomes = more confidence, ranks higher
+    });
 
   return ranked[0] || null;
 }

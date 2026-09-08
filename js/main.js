@@ -271,7 +271,10 @@ function renderFlywheel() {
   }
   const ranked = keys
     .map(k => ({ label: data[k].label || k, avg: +(data[k].sum / data[k].count).toFixed(1), count: data[k].count }))
-    .sort((a, b) => b.avg - a.avg)
+    .sort((a, b) => {
+      if (b.avg !== a.avg) return b.avg - a.avg;
+      return b.count - a.count; // tie-break: more logged outcomes = more confidence, ranks higher
+    })
     .slice(0, 5);
 
   lb.innerHTML = ranked.map(r => `
